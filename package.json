@@ -8,9 +8,21 @@
     "start": "nodemon index.js",
     "standard": "standard --fix"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddy03/bizsaya-whatsapp.git"
+  },
+  "keywords": [
+    "bizsaya",
+    "whatsapp",
+    "API"
+  ],
+  "bugs": {
+    "url": "https://github.com/eddy03/bizsaya-whatsapp/issues"
+  },
+  "homepage": "https://bizsaya.com",
   "author": "Edi Abdul Rahman <eddy@dontpushpush.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@google-cloud/datastore": "^1.1.0",
     "@google-cloud/pubsub": "^0.14.4",
