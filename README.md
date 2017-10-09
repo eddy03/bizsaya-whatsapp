@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/eddy03/bizsaya-whatsapp.svg?branch=master)](https://travis-ci.org/eddy03/bizsaya-whatsapp)
+
 # Bizsaya Whatsapp
 
 > Automation tools for your Facebook Pages with auto-reply
