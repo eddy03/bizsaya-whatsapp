@@ -3,6 +3,8 @@ language: node_js
 node_js:
 - node
 before_install:
+- openssl aes-256-cbc -K $encrypted_0b60be6fffaa_key -iv $encrypted_0b60be6fffaa_iv
+  -in googledatastore.txt.enc -out googledatastore.txt -d
 - travis_retry npm install
 script:
 - npm test
