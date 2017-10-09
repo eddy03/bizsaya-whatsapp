@@ -1,0 +1,13 @@
+sudo: false
+language: node_js
+node_js:
+- node
+before_install:
+- travis_retry npm install
+script:
+- npm test
+notifications:
+  email:
+  - eddy@dontpushpush.com
+services:
+- redis-server

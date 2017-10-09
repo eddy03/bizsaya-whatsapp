@@ -1,0 +1,8 @@
+.idea
+.env
+node_modules
+google-datastore.json
+google-datastore-bck.json
+google-pubsub.json
+datastore2file.js
+googledatastore.txt
