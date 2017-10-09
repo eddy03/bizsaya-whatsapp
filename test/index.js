@@ -91,7 +91,7 @@ describe('Test whole API', function () {
 
   })
 
-  describe('Seeding information data test', function () {
+  describe('Seeding/updating information data test', function () {
 
     this.retries(2)
 
@@ -117,7 +117,25 @@ describe('Test whole API', function () {
 
     })
 
-    it('Expected to return error 400 if seeding with incorrect parameters condition', function (done) {
+    it('Expected to not process task when authorization is incorrect', function (done) {
+
+      this.timeout(3000)
+
+      chai.request(URL)
+        .post(`/${BASE_KEY_TO_TEST}`)
+        .set('Authorization', 'thisAuthHeaderIsInvalid')
+        .end(function (err, res) {
+
+          expect(err).to.be.null
+          expect(res).to.redirect
+          expect(res).to.redirectTo(`${process.env.PORTAL_URL}/`)
+          done()
+
+        })
+
+    })
+
+    it('Expected to return error 400 if seeding/updating with incorrect parameters condition', function (done) {
 
       this.timeout(3000)
 
@@ -134,7 +152,7 @@ describe('Test whole API', function () {
 
     })
 
-    it('Expected to return error 404 if seeding with invalid parameters', function (done) {
+    it('Expected to return error 404 if seeding/updating with invalid parameters', function (done) {
 
       this.timeout(3000)
 
@@ -151,7 +169,7 @@ describe('Test whole API', function () {
 
     })
 
-    it('Expected to success when seeding with valid parameters and parameters condition', function (done) {
+    it('Expected to success when seeding/updating with valid parameters and parameters condition', function (done) {
 
       this.timeout(3000)
 
@@ -228,5 +246,81 @@ describe('Test whole API', function () {
     })
 
   })
+
+  describe('Flush out the information', function () {
+
+    this.retries(2)
+
+    it('Expected to not process task when authorization is incorrect', function (done) {
+
+      this.timeout(3000)
+
+      chai.request(URL)
+        .delete(`/${BASE_KEY_TO_TEST}`)
+        .set('Authorization', 'thisAuthHeaderIsInvalid')
+        .end(function (err, res) {
+
+          expect(err).to.be.null
+          expect(res).to.redirect
+          expect(res).to.redirectTo(`${process.env.PORTAL_URL}/`)
+          done()
+
+        })
+
+    })
+
+    it('Expected to return error 400 if flush out data with incorrect parameters condition', function (done) {
+
+      this.timeout(3000)
+
+      chai.request(URL)
+        .delete('/thisparam1/thisparam2/thisparam3')
+        .set('Authorization', process.env.AUTHORIZATION_KEY)
+        .end(function (err, res) {
+
+          expect(err).to.not.be.null
+          expect(res).to.have.status(400)
+          done()
+
+        })
+
+    })
+
+    it('Expected to return error 404 if flush out data with invalid parameters', function (done) {
+
+      this.timeout(3000)
+
+      chai.request(URL)
+        .delete('/thisparamisinvalid')
+        .set('Authorization', process.env.AUTHORIZATION_KEY)
+        .end(function (err, res) {
+
+          expect(err).to.not.be.null
+          expect(res).to.have.status(404)
+          done()
+
+        })
+
+    })
+
+    it('Expected to success when flush out data with valid parameters and parameters condition', function (done) {
+
+      this.timeout(3000)
+
+      chai.request(URL)
+        .delete(`/${BASE_KEY_TO_TEST}`)
+        .set('Authorization', process.env.AUTHORIZATION_KEY)
+        .end(function (err, res) {
+
+          expect(err).to.be.null
+          expect(res).to.have.status(200)
+          done()
+
+        })
+
+    })
+
+  })
+
 
 })

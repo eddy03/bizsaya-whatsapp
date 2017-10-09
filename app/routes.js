@@ -3,6 +3,7 @@
 const _ = require('lodash')
 const redirectToWhatsapp = require('./redirect-to-whatsapp')
 const injectData = require('./inject-data')
+const flushData = require('./flush-data')
 
 const BIZSAYA_URL = process.env.PORTAL_URL
 
@@ -38,6 +39,26 @@ module.exports = (req, res) => {
           }
 
           res.end()
+        })
+    } else {
+      res.writeHead(400, { 'Content-Type': 'text/plain' })
+      res.end()
+    }
+  } else if (METHOD === 'DELETE' && _.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
+    // Flush the information
+
+    const KEY = URL.substr(1).split('/')
+    if (KEY.length === 1) {
+      flushData(KEY[0])
+        .then(() => res.end())
+        .catch(err => {
+          if (err.toString() === 'Error: NOT FOUND') {
+            res.writeHead(404, { 'Content-Type': 'text/plain' })
+            res.end()
+          } else {
+            res.writeHead(500, { 'Content-Type': 'text/plain' })
+            res.end()
+          }
         })
     } else {
       res.writeHead(400, { 'Content-Type': 'text/plain' })
