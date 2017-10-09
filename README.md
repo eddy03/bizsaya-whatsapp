@@ -18,7 +18,7 @@ and monitoring the performance statistics.
 
 ## License
 
-MIT. Copyright (c) [Edi Abdul Rahman](http://dontpushpush.com)
+[MIT](bizsaya-whatsapp/LICENSE.md). Copyright (c) [Edi Abdul Rahman](http://dontpushpush.com)
 
 This project is using JS standard Code Style
 
