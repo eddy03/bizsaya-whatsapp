@@ -5,52 +5,85 @@
  *
  */
 
+const http = require('http')
 const Promise = require('bluebird')
-const googleDatastore = require('@google-cloud/datastore')
+const superagent = require('superagent')
+const async = require('async')
+const _ = require('lodash')
 const Redis = require('redis')
-const redis = Redis.createClient({ db: parseInt(process.env.REDIS_DB) })
+const redis = Redis.createClient({db: parseInt(process.env.REDIS_DB)})
+
+const Routes = require('../app/routes')
+const dataModel = require('../app/data')
 
 // Do we need to seed data from main database?
 const seed = false
 
-module.exports = () => new Promise((resolve, reject) => {
-  // Please ensure you have service keys name google-datastore.json to connect to GCP datastore
-  const DB = googleDatastore({ keyFilename: './google-datastore.json' })
-
-  redis.on('ready', () => {
-    if (seed === true || process.env.DEV === 'false') {
-      getAllWhatsappEntriesAndSaveIntoRedis(DB, redis)
-        .then(() => resolve({ DB, redis }))
-        .catch(err => reject(err))
-    } else {
-      resolve({ DB, redis })
-    }
-  })
-
-  redis.on('error', err => reject(err))
-})
-
-/**
- * Get All whatsapp entries from main DB and load it into redis DB
- *
- * @param DB Google Datastore DB
- * @param redis Redis DB
- * @return Promise
- */
-function getAllWhatsappEntriesAndSaveIntoRedis (DB, redis) {
+function initData () {
   return new Promise((resolve, reject) => {
-    const query = DB.createQuery(process.env.COLLECTION)
 
-    DB.runQueryStream(query)
-      .on('error', err => reject(err))    // Something error happen...
-      .on('data', entity => {
-        // Save phone number and message to be send
-        redis.set(entity.id, JSON.stringify({
-          phone: `6${entity.phone}`,
-          msg: encodeURIComponent(entity.message),
-          hit: 0
-        }))
-      })
-      .on('end', () => resolve())         // Everything is done. Continue bootup...
+    redis.on('ready', () => {
+      global.REDIS = redis
+      if (seed === true || process.env.DEV === 'false') {
+        getDataFromMainAPI()
+          .then(saveIntoCache)
+          .then(() => resolve())
+          .catch(err => reject(err))
+
+      } else {
+        resolve()
+      }
+    })
+
+    redis.on('error', err => reject(err))
+
   })
 }
+
+function getDataFromMainAPI () {
+  return new Promise((resolve, reject) => {
+
+    superagent.get(`${process.env.API_URL}/getdata`)
+      .set('Authorization', process.env.AUTHORIZATION_KEY)
+      .end((err, response) => {
+        if (err || (response && response.body && response.body.success === false)) {
+          reject(err)
+        } else {
+          resolve(response.body.data || [])
+        }
+      })
+
+  })
+}
+
+function saveIntoCache (datas) {
+
+  return new Promise(resolve => {
+
+    async.each(datas, (data, callback) => {
+
+      dataModel.saveData(data)
+      callback()
+
+    }, () => resolve())
+
+  })
+}
+
+function createHTTPServer () {
+  return new Promise((resolve, reject) => {
+
+    http
+      .createServer(Routes)
+      .listen(process.env.PORT, process.env.HOST, err => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+
+  })
+}
+
+module.exports = {initData, createHTTPServer}

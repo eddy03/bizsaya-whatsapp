@@ -1,9 +1,8 @@
 'use strict'
 
 const _ = require('lodash')
-const redirectToWhatsapp = require('./redirect-to-whatsapp')
-const injectData = require('./inject-data')
-const flushData = require('./flush-data')
+const redirectToWhatsapp = require('./to-whatsapp')
+const dataModel = require('./data')
 
 const BIZSAYA_URL = process.env.PORTAL_URL
 
@@ -15,7 +14,6 @@ module.exports = (req, res) => {
 
   if (METHOD === 'GET') {
     // Incomming Whatsapp API
-
     const KEY = URL.substr(1).split('/')
     if (KEY.length === 1) {
       redirectToWhatsapp(KEY[0])
@@ -25,52 +23,35 @@ module.exports = (req, res) => {
       response(res)
     }
   } else if (METHOD === 'POST' && _.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
-    // Feeding new information
+    // New data
+    let body = ''
+    req.on('data', chunk => {
+      body += chunk.toString()
+    })
+    req.on('end', () => {
+      let payload = JSON.parse(body)
+      if(!_.isEmpty(payload) && !_.isEmpty(payload.id)) {
+        dataModel.saveData(payload)
+      } else {
+        res.writeHead(400, { 'Content-Type': 'text/plain' })
+      }
+    })
+    res.end()
 
-    const KEY = URL.substr(1).split('/')
-    if (KEY.length === 1) {
-      injectData(KEY[0])
-        .then(() => res.end())
-        .catch(err => {
-          if (err.toString() === 'Error: NOT FOUND') {
-            res.writeHead(404, { 'Content-Type': 'text/plain' })
-          } else {
-            res.writeHead(500, { 'Content-Type': 'text/plain' })
-          }
-
-          res.end()
-        })
-    } else {
-      res.writeHead(400, { 'Content-Type': 'text/plain' })
-      res.end()
-    }
   } else if (METHOD === 'DELETE' && _.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
     // Flush the information
-
     const KEY = URL.substr(1).split('/')
     if (KEY.length === 1) {
-      flushData(KEY[0])
-        .then(() => res.end())
-        .catch(err => {
-          if (err.toString() === 'Error: NOT FOUND') {
-            res.writeHead(404, { 'Content-Type': 'text/plain' })
-            res.end()
-          } else {
-            res.writeHead(500, { 'Content-Type': 'text/plain' })
-            res.end()
-          }
-        })
+      dataModel.removeData(KEY[0])
     } else {
       res.writeHead(400, { 'Content-Type': 'text/plain' })
-      res.end()
     }
+    res.end()
   } else if (METHOD === 'HEAD') {
     // Uptime robots check
-
     res.end('Is ready')
   } else {
     // Other routing
-
     response(res, BIZSAYA_URL, 301)
   }
 }
