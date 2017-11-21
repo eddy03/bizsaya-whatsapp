@@ -31,6 +31,7 @@
     "dotenv": "^4.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "pusher": "^1.5.1",
     "raven": "^2.2.1",
     "redis": "^2.8.0",
     "superagent": "^3.6.3",
