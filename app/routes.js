@@ -38,6 +38,7 @@ module.exports = (req, res) => {
       let payload = JSON.parse(body)
       if(!_.isEmpty(payload) && !_.isEmpty(payload.id)) {
         dataModel.saveData(payload)
+        global.log(`Update whatsapp data ${payload.id}`)
       } else {
         res.writeHead(400, { 'Content-Type': 'text/plain' })
       }
@@ -49,6 +50,7 @@ module.exports = (req, res) => {
     const KEY = URL.substr(1).split('/')
     if (KEY.length === 1) {
       dataModel.removeData(KEY[0])
+      global.log(`Remove whatsapp data ${KEY[0]}`)
     } else {
       res.writeHead(400, { 'Content-Type': 'text/plain' })
     }

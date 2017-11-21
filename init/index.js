@@ -11,6 +11,7 @@ const superagent = require('superagent')
 const async = require('async')
 const _ = require('lodash')
 const Raven = require('raven')
+const Pusher = require('pusher')
 const Redis = require('redis')
 const redis = Redis.createClient({db: parseInt(process.env.REDIS_DB)})
 
@@ -108,6 +109,19 @@ function initStatistics () {
       redis.set(_KEY, global.hit)
     }
   })
+
+  const pusher = new Pusher({
+    appId: process.env.PUSHER_APP_ID,
+    key: process.env.PUSHER_KEY,
+    secret: process.env.PUSHER_SECRET,
+    cluster: 'ap1',
+    encrypted: true
+  })
+
+  global.log = msg => {
+    const activity = `[WHATSAPP] ${msg}`
+    pusher.trigger(process.env.PUSHER_CHANNEL, 'activity', { activity })
+  }
 }
 
 module.exports = {initData, createHTTPServer, initStatistics}
