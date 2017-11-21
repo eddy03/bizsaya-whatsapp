@@ -9,6 +9,7 @@ module.exports = key => new Promise((resolve, reject) => {
         resolve(`https://api.whatsapp.com/send?phone=${data.phone}&text=${data.msg}`)
         data.hit++
         dataModel.saveDataRAW(key, data)
+        global.stat()
         global.log(`Click to ${data.phone} - ${key}`)
       } else {
         resolve(process.env.PORTAL_URL)
