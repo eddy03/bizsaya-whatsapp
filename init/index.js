@@ -23,11 +23,10 @@ const seed = false
 
 function initData () {
   return new Promise((resolve, reject) => {
-
     redis.on('ready', () => {
       global.REDIS = redis
 
-      if(process.env.DEV === 'false') {
+      if (process.env.DEV === 'false') {
         Raven.config(process.env.SENTRY_DSN).install()
         global.captureException = err => Raven.captureException(err)
       } else {
@@ -45,13 +44,11 @@ function initData () {
     })
 
     redis.on('error', err => reject(err))
-
   })
 }
 
 function getDataFromMainAPI () {
   return new Promise((resolve, reject) => {
-
     superagent.get(`${process.env.API_URL}/getdata`)
       .set('Authorization', process.env.AUTHORIZATION_KEY)
       .end((err, response) => {
@@ -61,27 +58,20 @@ function getDataFromMainAPI () {
           resolve(response.body.data || [])
         }
       })
-
   })
 }
 
 function saveIntoCache (datas) {
-
   return new Promise(resolve => {
-
     async.each(datas, (data, callback) => {
-
       dataModel.saveData(data)
       callback()
-
     }, () => resolve())
-
   })
 }
 
 function createHTTPServer () {
   return new Promise((resolve, reject) => {
-
     http
       .createServer(Routes)
       .listen(process.env.PORT, process.env.HOST, err => {
@@ -91,7 +81,6 @@ function createHTTPServer () {
           resolve()
         }
       })
-
   })
 }
 
@@ -99,8 +88,10 @@ function initStatistics () {
   const _KEY = 'stats'
   global.stat = () => redis.incr(_KEY)
   redis.get(_KEY, (err, stats) => {
-    if(_.isEmpty(stats)) {
+    if (!err && _.isEmpty(stats)) {
       redis.set(_KEY, 0)
+    } else if (err) {
+      global.captureException(err)
     }
   })
 
