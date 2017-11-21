@@ -97,16 +97,10 @@ function createHTTPServer () {
 
 function initStatistics () {
   const _KEY = 'stats'
-  global.stat = () => {
-    redis.incr(_KEY)
-  }
-
+  global.stat = () => redis.incr(_KEY)
   redis.get(_KEY, (err, stats) => {
-    if(stats) {
-      global.hit = parseInt(stats)
-    } else {
-      global.hit = 0
-      redis.set(_KEY, global.hit)
+    if(_.isEmpty(stats)) {
+      redis.set(_KEY, 0)
     }
   })
 
