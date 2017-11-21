@@ -21,6 +21,13 @@ const dataModel = require('../app/data')
 // Do we need to seed data from main database?
 const seed = false
 
+/***
+ * Initialize the application
+ * - Connect to redis
+ * - Setup Sentry
+ * - Fetch data from master API and save to cache database (redis)
+ *
+ */
 function initData () {
   return new Promise((resolve, reject) => {
     redis.on('ready', () => {
@@ -47,6 +54,10 @@ function initData () {
   })
 }
 
+/***
+ * Fetch data from core API
+ *
+ */
 function getDataFromMainAPI () {
   return new Promise((resolve, reject) => {
     superagent.get(`${process.env.API_URL}/getdata`)
@@ -61,6 +72,11 @@ function getDataFromMainAPI () {
   })
 }
 
+/**
+ * Save the data into cache database
+ *
+ * @param datas
+ */
 function saveIntoCache (datas) {
   return new Promise(resolve => {
     async.each(datas, (data, callback) => {
@@ -70,6 +86,10 @@ function saveIntoCache (datas) {
   })
 }
 
+/**
+ * Bootup node.js naked http server (more speed!)
+ *
+ */
 function createHTTPServer () {
   return new Promise((resolve, reject) => {
     http
@@ -84,6 +104,12 @@ function createHTTPServer () {
   })
 }
 
+/**
+ * Get ready the statistics required
+ * - bind the statistics and logs functions
+ * - Connect to pusher for logs streams
+ *
+ */
 function initStatistics () {
   const _KEY = 'stats'
   global.stat = () => redis.incr(_KEY)
