@@ -21,13 +21,19 @@ const dataModel = require('../app/data')
 // Do we need to seed data from main database?
 const seed = false
 
+/***
+ * Initialize the application
+ * - Connect to redis
+ * - Setup Sentry
+ * - Fetch data from master API and save to cache database (redis)
+ *
+ */
 function initData () {
   return new Promise((resolve, reject) => {
-
     redis.on('ready', () => {
       global.REDIS = redis
 
-      if(process.env.DEV === 'false') {
+      if (process.env.DEV === 'false') {
         Raven.config(process.env.SENTRY_DSN).install()
         global.captureException = err => Raven.captureException(err)
       } else {
@@ -45,13 +51,15 @@ function initData () {
     })
 
     redis.on('error', err => reject(err))
-
   })
 }
 
+/***
+ * Fetch data from core API
+ *
+ */
 function getDataFromMainAPI () {
   return new Promise((resolve, reject) => {
-
     superagent.get(`${process.env.API_URL}/getdata`)
       .set('Authorization', process.env.AUTHORIZATION_KEY)
       .end((err, response) => {
@@ -61,27 +69,29 @@ function getDataFromMainAPI () {
           resolve(response.body.data || [])
         }
       })
-
   })
 }
 
+/**
+ * Save the data into cache database
+ *
+ * @param datas
+ */
 function saveIntoCache (datas) {
-
   return new Promise(resolve => {
-
     async.each(datas, (data, callback) => {
-
       dataModel.saveData(data)
       callback()
-
     }, () => resolve())
-
   })
 }
 
+/**
+ * Bootup node.js naked http server (more speed!)
+ *
+ */
 function createHTTPServer () {
   return new Promise((resolve, reject) => {
-
     http
       .createServer(Routes)
       .listen(process.env.PORT, process.env.HOST, err => {
@@ -91,22 +101,23 @@ function createHTTPServer () {
           resolve()
         }
       })
-
   })
 }
 
+/**
+ * Get ready the statistics required
+ * - bind the statistics and logs functions
+ * - Connect to pusher for logs streams
+ *
+ */
 function initStatistics () {
   const _KEY = 'stats'
-  global.stat = () => {
-    redis.incr(_KEY)
-  }
-
+  global.stat = () => redis.incr(_KEY)
   redis.get(_KEY, (err, stats) => {
-    if(stats) {
-      global.hit = parseInt(stats)
-    } else {
-      global.hit = 0
-      redis.set(_KEY, global.hit)
+    if (!err && _.isEmpty(stats)) {
+      redis.set(_KEY, 0)
+    } else if (err) {
+      global.captureException(err)
     }
   })
 

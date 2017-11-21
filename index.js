@@ -12,7 +12,7 @@ require('dotenv').config()
 const init = require('./init')
 
 init.initData()
-  .then(init.createHTTPServer)
   .then(init.initStatistics)
+  .then(init.createHTTPServer)
   .then(() => console.log(`Bizsaya whatsapp engine is running on ${process.env.HOST}:${process.env.PORT}`))
   .catch(err => global.captureException(err))

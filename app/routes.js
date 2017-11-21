@@ -20,7 +20,7 @@ module.exports = (req, res) => {
       redirectToWhatsapp(KEY[0])
         .then(location => response(res, location))
         .catch(err => {
-          if(_.isNull(err.toString().match(/^Error: Unable to get /))) {
+          if (_.isNull(err.toString().match(/^Error: Unable to get /))) {
             global.captureException(err)
           }
           response(res)
@@ -36,7 +36,7 @@ module.exports = (req, res) => {
     })
     req.on('end', () => {
       let payload = JSON.parse(body)
-      if(!_.isEmpty(payload) && !_.isEmpty(payload.id)) {
+      if (!_.isEmpty(payload) && !_.isEmpty(payload.id)) {
         dataModel.saveData(payload)
         global.log(`Update whatsapp data ${payload.id}`)
       } else {
@@ -44,7 +44,6 @@ module.exports = (req, res) => {
       }
     })
     res.end()
-
   } else if (METHOD === 'DELETE' && _.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
     // Flush the information
     const KEY = URL.substr(1).split('/')
