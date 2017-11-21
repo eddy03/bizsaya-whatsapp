@@ -61,7 +61,7 @@ function initData () {
 function getDataFromMainAPI () {
   return new Promise((resolve, reject) => {
     superagent.get(`${process.env.API_URL}/getdata`)
-      .set('Authorization', process.env.AUTHORIZATION_KEY)
+      .set('Authorization', process.env.TO_API_AUTH)
       .end((err, response) => {
         if (err || (response && response.body && response.body.success === false)) {
           reject(err)
