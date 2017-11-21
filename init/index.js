@@ -10,6 +10,7 @@ const Promise = require('bluebird')
 const superagent = require('superagent')
 const async = require('async')
 const _ = require('lodash')
+const Raven = require('raven')
 const Redis = require('redis')
 const redis = Redis.createClient({db: parseInt(process.env.REDIS_DB)})
 
@@ -24,12 +25,19 @@ function initData () {
 
     redis.on('ready', () => {
       global.REDIS = redis
+
+      if(process.env.DEV === 'false') {
+        Raven.config(process.env.SENTRY_DSN).install()
+        global.captureException = err => Raven.captureException(err)
+      } else {
+        global.captureException = err => console.error(err.toString(), err)
+      }
+
       if (seed === true || process.env.DEV === 'false') {
         getDataFromMainAPI()
           .then(saveIntoCache)
           .then(() => resolve())
           .catch(err => reject(err))
-
       } else {
         resolve()
       }
@@ -86,4 +94,20 @@ function createHTTPServer () {
   })
 }
 
-module.exports = {initData, createHTTPServer}
+function initStatistics () {
+  const _KEY = 'stats'
+  global.stat = () => {
+    redis.incr(_KEY)
+  }
+
+  redis.get(_KEY, (err, stats) => {
+    if(stats) {
+      global.hit = parseInt(stats)
+    } else {
+      global.hit = 0
+      redis.set(_KEY, global.hit)
+    }
+  })
+}
+
+module.exports = {initData, createHTTPServer, initStatistics}

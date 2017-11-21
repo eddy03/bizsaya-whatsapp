@@ -13,5 +13,6 @@ const init = require('./init')
 
 init.initData()
   .then(init.createHTTPServer)
+  .then(init.initStatistics)
   .then(() => console.log(`Bizsaya whatsapp engine is running on ${process.env.HOST}:${process.env.PORT}`))
-  .catch(err => console.error(err.toString(), err))
+  .catch(err => global.captureException(err))

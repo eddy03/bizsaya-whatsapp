@@ -16,9 +16,15 @@ module.exports = (req, res) => {
     // Incomming Whatsapp API
     const KEY = URL.substr(1).split('/')
     if (KEY.length === 1) {
+      global.stat()
       redirectToWhatsapp(KEY[0])
         .then(location => response(res, location))
-        .catch(() => response(res))
+        .catch(err => {
+          if(_.isNull(err.toString().match(/^Error: Unable to get /))) {
+            global.captureException(err)
+          }
+          response(res)
+        })
     } else {
       response(res)
     }
