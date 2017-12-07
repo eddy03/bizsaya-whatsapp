@@ -8,26 +8,25 @@ const ws = require('../models/whatsapp')
 // Incomming Whatsapp API
 
 module.exports = (req, res) => {
-
   const URL = _.clone(req.url.substring(1))
   let number = URL.substring(0, URL.indexOf('/'))
 
   // Unregistered user use our API
-  if(number.match(/^(01|601)(\d{7,8})$/) || URL.match(/^(01|601)(\d{7,8})$/)) {
+  if (number.match(/^(01|601)(\d{7,8})$/) || URL.match(/^(01|601)(\d{7,8})$/)) {
     const baseWSURL = ws.BASE_URL
     let messages = ''
 
-    if(URL.match(/^(01|601)(\d{7,8})$/)) {
+    if (URL.match(/^(01|601)(\d{7,8})$/)) {
       number = URL
     } else {
       messages = URL.substring(URL.indexOf('/')) || ''
-      if(!_.isEmpty(messages)) {
+      if (!_.isEmpty(messages)) {
         messages = messages.substring(1)
-        messages = _.isEmpty(messages)? '' : `&text=${messages}`
+        messages = _.isEmpty(messages) ? '' : `&text=${messages}`
       }
     }
 
-    if(req.headers.host === 'g.yobb.me') {
+    if (req.headers.host === 'g.yobb.me') {
       res.end(`${baseWSURL}${number}${messages}`)
     } else {
       response.redirect(res, `${baseWSURL}${number}${messages}`)
@@ -36,7 +35,7 @@ module.exports = (req, res) => {
     }
   } else {
     const KEY = URL.split('/')
-    if(KEY.length === 1) {
+    if (KEY.length === 1) {
       ws.getKeyAndReturnURL(KEY[0])
         .then(url => response.redirect(res, url))
         .catch(err => {
@@ -51,5 +50,4 @@ module.exports = (req, res) => {
       response.empty(res)
     }
   }
-
 }

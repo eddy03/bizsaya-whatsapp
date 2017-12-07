@@ -5,11 +5,9 @@ const response = require('../models/responses')
 const dataModel = require('../models/data')
 
 module.exports = (req, res) => {
-
   const URL = _.clone(req.url)
 
-  if(_.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
-
+  if (_.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
     // Flush the information
     const KEY = URL.substr(1).split('/')
     if (KEY.length === 1) {
@@ -19,9 +17,7 @@ module.exports = (req, res) => {
     } else {
       response.fatal(res, 400)
     }
-
   } else {
     response.empty(res)
   }
-
 }

@@ -12,14 +12,12 @@ response.ok = (res, statusCode = 200, msg = 'Success') => {
 }
 
 response.redirect = (res, url = null, statusCode = 302) => {
-
-  if(_.isNull(url)) {
+  if (_.isNull(url)) {
     url = BIZSAYA_URL
   }
 
   res.writeHead(statusCode, { Location: url })
   res.end()
-
 }
 
 response.fatal = (res, statusCode = 500, msg = 'There is an error. Thats all I know') => {
@@ -28,8 +26,7 @@ response.fatal = (res, statusCode = 500, msg = 'There is an error. Thats all I k
 }
 
 response.empty = (res, msg = null) => {
-
-  if(_.isNull(msg)) {
+  if (_.isNull(msg)) {
     msg = global.response.empty
   }
 
@@ -37,8 +34,7 @@ response.empty = (res, msg = null) => {
 }
 
 response.error = (res, msg = null) => {
-
-  if(_.isNull(msg)) {
+  if (_.isNull(msg)) {
     msg = global.response.error
   }
 

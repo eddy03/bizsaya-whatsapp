@@ -5,9 +5,7 @@ const response = require('../models/responses')
 const dataModel = require('../models/data')
 
 module.exports = (req, res) => {
-
-  if(_.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
-
+  if (_.has(req.headers, 'authorization') && req.headers.authorization === process.env.AUTHORIZATION_KEY) {
     // New data
     let body = ''
     req.on('data', chunk => {
@@ -23,9 +21,7 @@ module.exports = (req, res) => {
         response.fatal(res, 400, 'Empty payload or upsupported format payload')
       }
     })
-
   } else {
     response.empty(res)
   }
-
 }

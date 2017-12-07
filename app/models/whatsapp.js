@@ -7,7 +7,6 @@ let ws = {}
 ws.BASE_URL = 'https://api.whatsapp.com/send?phone='
 
 ws.getKeyAndReturnURL = key => new Promise((resolve, reject) => {
-
   dataModel.getData(key)
     .then(data => {
       if (data) {
@@ -21,7 +20,6 @@ ws.getKeyAndReturnURL = key => new Promise((resolve, reject) => {
       }
     })
     .catch(err => reject(err))
-
 })
 
 module.exports = ws

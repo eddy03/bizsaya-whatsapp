@@ -137,35 +137,43 @@ function initStatistics () {
   }
 }
 
+/**
+ * Get static content and assign to variable.
+ *
+ */
 function getStaticContent () {
+  return new Promise((resolve, reject) => {
 
-  const location = path.join(__dirname, '..', 'app', 'static')
+    const staticContentPath = path.join(__dirname, '..', 'app', 'static')
 
-  global.response = {
-    empty: '',
-    error: ''
-  }
-
-  fs.readFile(path.join(location, 'empty.html'), (err, content) => {
-
-    if(err) {
-      console.error(err)
-    } else {
-      global.response.empty = content.toString()
+    global.response = {
+      empty: '',
+      error: ''
     }
 
+    async.auto({
+
+      getEmptyPage: cb => {
+        fs.readFile(path.join(staticContentPath, 'empty.html'), (err, content) => cb(err, content.toString()))
+      },
+
+      getErrorPage: cb => {
+        fs.readFile(path.join(staticContentPath, 'error.html'), (err, content) => cb(err, content.toString()))
+      }
+
+    }, (err, results) => {
+      if(err) {
+        reject(err)
+      } else {
+        global.response = {
+          empty: results.getEmptyPage,
+          error: results.getErrorPage
+        }
+        resolve()
+      }
+    })
+
   })
-
-  fs.readFile(path.join(location, 'error.html'), (err, content) => {
-
-    if(err) {
-      console.error(err)
-    } else {
-      global.response.error = content.toString()
-    }
-
-  })
-
 }
 
 module.exports = {initData, createHTTPServer, initStatistics, getStaticContent}
