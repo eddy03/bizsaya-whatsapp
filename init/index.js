@@ -10,13 +10,15 @@ const Promise = require('bluebird')
 const superagent = require('superagent')
 const async = require('async')
 const _ = require('lodash')
+const fs = require('fs')
+const path = require('path')
 const Raven = require('raven')
 const Pusher = require('pusher')
 const Redis = require('redis')
 const redis = Redis.createClient({db: parseInt(process.env.REDIS_DB)})
 
-const Routes = require('../app/routes')
-const dataModel = require('../app/data')
+const Routes = require('../app/routing')
+const dataModel = require('../app/models/data')
 
 // Do we need to seed data from main database?
 const seed = true
@@ -135,4 +137,41 @@ function initStatistics () {
   }
 }
 
-module.exports = {initData, createHTTPServer, initStatistics}
+/**
+ * Get static content and assign to global variable.
+ *
+ */
+function getStaticContent () {
+  return new Promise((resolve, reject) => {
+    const staticContentPath = path.join(__dirname, '..', 'app', 'static')
+
+    global.response = {
+      empty: '',
+      error: ''
+    }
+
+    async.auto({
+
+      getEmptyPage: cb => {
+        fs.readFile(path.join(staticContentPath, 'empty.html'), (err, content) => cb(err, content.toString()))
+      },
+
+      getErrorPage: cb => {
+        fs.readFile(path.join(staticContentPath, 'error.html'), (err, content) => cb(err, content.toString()))
+      }
+
+    }, (err, results) => {
+      if (err) {
+        reject(err)
+      } else {
+        global.response = {
+          empty: results.getEmptyPage,
+          error: results.getErrorPage
+        }
+        resolve()
+      }
+    })
+  })
+}
+
+module.exports = {initData, createHTTPServer, initStatistics, getStaticContent}

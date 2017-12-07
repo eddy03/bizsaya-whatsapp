@@ -2,11 +2,15 @@
 
 const dataModel = require('./data')
 
-module.exports = key => new Promise((resolve, reject) => {
+let ws = {}
+
+ws.BASE_URL = 'https://api.whatsapp.com/send?phone='
+
+ws.getKeyAndReturnURL = key => new Promise((resolve, reject) => {
   dataModel.getData(key)
     .then(data => {
       if (data) {
-        resolve(`https://api.whatsapp.com/send?phone=${data.phone}&text=${data.msg}`)
+        resolve(`${ws.BASE_URL}${data.phone}&text=${data.msg}`)
         data.hit++
         dataModel.saveDataRAW(key, data)
         global.stat()
@@ -17,3 +21,5 @@ module.exports = key => new Promise((resolve, reject) => {
     })
     .catch(err => reject(err))
 })
+
+module.exports = ws
