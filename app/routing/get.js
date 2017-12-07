@@ -6,7 +6,6 @@ const response = require('../models/responses')
 const ws = require('../models/whatsapp')
 
 // Incomming Whatsapp API
-
 module.exports = (req, res) => {
   const URL = _.clone(req.url.substring(1))
   let number = URL.substring(0, URL.indexOf('/'))

@@ -10,7 +10,7 @@ ws.getKeyAndReturnURL = key => new Promise((resolve, reject) => {
   dataModel.getData(key)
     .then(data => {
       if (data) {
-        resolve(`https://api.whatsapp.com/send?phone=${data.phone}&text=${data.msg}`)
+        resolve(`${ws.BASE_URL}${data.phone}&text=${data.msg}`)
         data.hit++
         dataModel.saveDataRAW(key, data)
         global.stat()

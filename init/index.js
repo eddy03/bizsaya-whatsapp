@@ -138,7 +138,7 @@ function initStatistics () {
 }
 
 /**
- * Get static content and assign to variable.
+ * Get static content and assign to global variable.
  *
  */
 function getStaticContent () {
