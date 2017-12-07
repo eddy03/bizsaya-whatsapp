@@ -143,7 +143,6 @@ function initStatistics () {
  */
 function getStaticContent () {
   return new Promise((resolve, reject) => {
-
     const staticContentPath = path.join(__dirname, '..', 'app', 'static')
 
     global.response = {
@@ -162,7 +161,7 @@ function getStaticContent () {
       }
 
     }, (err, results) => {
-      if(err) {
+      if (err) {
         reject(err)
       } else {
         global.response = {
@@ -172,7 +171,6 @@ function getStaticContent () {
         resolve()
       }
     })
-
   })
 }
 
