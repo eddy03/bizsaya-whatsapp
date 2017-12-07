@@ -19,7 +19,7 @@ const Routes = require('../app/routes')
 const dataModel = require('../app/data')
 
 // Do we need to seed data from main database?
-const seed = false
+const seed = true
 
 /***
  * Initialize the application
