@@ -10,13 +10,15 @@ const Promise = require('bluebird')
 const superagent = require('superagent')
 const async = require('async')
 const _ = require('lodash')
+const fs = require('fs')
+const path = require('path')
 const Raven = require('raven')
 const Pusher = require('pusher')
 const Redis = require('redis')
 const redis = Redis.createClient({db: parseInt(process.env.REDIS_DB)})
 
-const Routes = require('../app/routes')
-const dataModel = require('../app/data')
+const Routes = require('../app/routing')
+const dataModel = require('../app/models/data')
 
 // Do we need to seed data from main database?
 const seed = true
@@ -135,4 +137,35 @@ function initStatistics () {
   }
 }
 
-module.exports = {initData, createHTTPServer, initStatistics}
+function getStaticContent () {
+
+  const location = path.join(__dirname, '..', 'app', 'static')
+
+  global.response = {
+    empty: '',
+    error: ''
+  }
+
+  fs.readFile(path.join(location, 'empty.html'), (err, content) => {
+
+    if(err) {
+      console.error(err)
+    } else {
+      global.response.empty = content.toString()
+    }
+
+  })
+
+  fs.readFile(path.join(location, 'error.html'), (err, content) => {
+
+    if(err) {
+      console.error(err)
+    } else {
+      global.response.error = content.toString()
+    }
+
+  })
+
+}
+
+module.exports = {initData, createHTTPServer, initStatistics, getStaticContent}
