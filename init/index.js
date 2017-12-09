@@ -21,7 +21,7 @@ const Routes = require('../app/routing')
 const dataModel = require('../app/models/data')
 
 // Do we need to seed data from main database?
-const seed = true
+const seed = false
 
 /***
  * Initialize the application
@@ -37,9 +37,17 @@ function initData () {
 
       if (process.env.DEV === 'false') {
         Raven.config(process.env.SENTRY_DSN).install()
-        global.captureException = err => Raven.captureException(err)
+        global.captureException = err => {
+          if (err) {
+            Raven.captureException(err)
+          }
+        }
       } else {
-        global.captureException = err => console.error(err.toString(), err)
+        global.captureException = err => {
+          if (err) {
+            console.error(err.toString(), err)
+          }
+        }
       }
 
       if (seed === true || process.env.DEV === 'false') {
