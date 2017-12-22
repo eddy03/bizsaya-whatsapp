@@ -37,14 +37,13 @@ function initData () {
 
       if (process.env.DEV === 'false') {
         Raven.config(process.env.SENTRY_DSN).install()
-        global.captureException = err => {
-          if (err) {
+      }
+
+      global.captureException = (err = null) => {
+        if (err) {
+          if (process.env.DEV === 'false') {
             Raven.captureException(err)
-          }
-        }
-      } else {
-        global.captureException = err => {
-          if (err) {
+          } else {
             console.error(err.toString(), err)
           }
         }
@@ -52,7 +51,7 @@ function initData () {
 
       if (seed === true || process.env.DEV === 'false') {
         getDataFromMainAPI()
-          .then(saveIntoCache)
+          .then(saveDataIntoCache)
           .then(() => resolve())
           .catch(err => reject(err))
       } else {
@@ -87,7 +86,7 @@ function getDataFromMainAPI () {
  *
  * @param datas
  */
-function saveIntoCache (datas) {
+function saveDataIntoCache (datas) {
   return new Promise(resolve => {
     async.each(datas, (data, callback) => {
       dataModel.saveData(data)
@@ -182,4 +181,4 @@ function getStaticContent () {
   })
 }
 
-module.exports = {initData, createHTTPServer, initStatistics, getStaticContent}
+module.exports = { initData, createHTTPServer, initStatistics, getStaticContent }

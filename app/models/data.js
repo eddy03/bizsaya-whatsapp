@@ -17,8 +17,8 @@ module.exports = {
 
   saveData: data => {
     global.REDIS.set(data.id, JSON.stringify({
-      phone: `6${data.phone.replace(/\D/g, '')}`,
-      msg: _.isEmpty(data.msg) ? '' : encodeURIComponent(data.msg),
+      phone: data.phone,
+      msg: _.isEmpty(data.message) ? '' : encodeURIComponent(data.message),
       hit: 0
     }))
   },

@@ -4,6 +4,7 @@ const _ = require('lodash')
 
 const response = require('../models/responses')
 const ws = require('../models/whatsapp')
+const pn = require('../models/phone-number')
 
 // Incomming Whatsapp API
 module.exports = (req, res) => {
@@ -26,11 +27,11 @@ module.exports = (req, res) => {
     }
 
     if (req.headers.host === 'g.yobb.me') {
-      res.end(`${baseWSURL}${number}${messages}`)
+      res.end(`${baseWSURL}${pn(number)}${messages}`)
     } else {
-      response.redirect(res, `${baseWSURL}${number}${messages}`)
+      response.redirect(res, `${baseWSURL}${pn(number)}${messages}`)
       global.stat()
-      global.log(`Click to ${number} - Public API`)
+      global.log(`Click to ${pn(number)} - Public API`)
     }
   } else {
     const KEY = URL.split('/')
