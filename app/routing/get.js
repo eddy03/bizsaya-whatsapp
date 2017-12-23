@@ -12,11 +12,11 @@ module.exports = (req, res) => {
   let number = URL.substring(0, URL.indexOf('/'))
 
   // Unregistered user use our API
-  if (number.match(/^(01|601)(\d{7,8})$/) || URL.match(/^(01|601)(\d{7,8})$/)) {
+  if (number.match(/^(01|601)(\d{7,9})$/) || URL.match(/^(01|601)(\d{7,9})$/)) {
     const baseWSURL = ws.BASE_URL
     let messages = ''
 
-    if (URL.match(/^(01|601)(\d{7,8})$/)) {
+    if (URL.match(/^(01|601)(\d{7,9})$/)) {
       number = URL
     } else {
       messages = URL.substring(URL.indexOf('/')) || ''
