@@ -35,7 +35,7 @@ module.exports = (req, res) => {
     }
   } else {
     const KEY = URL.split('/')
-    if (KEY.length === 1) {
+    if (URL !== '' && KEY.length === 1) {
       ws.getKeyAndReturnURL(KEY[0])
         .then(url => response.redirect(res, url))
         .catch(err => {
@@ -47,7 +47,7 @@ module.exports = (req, res) => {
           }
         })
     } else {
-      response.empty(res)
+      response.homepage(res)
     }
   }
 }

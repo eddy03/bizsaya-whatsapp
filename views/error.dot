@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{# def.head }}
+    </head>
+<body>
+<div class="container" style="text-align: center">
+
+    {{# def.errorrobot }}
+
+    <p class="lead">
+        Ohh OOooo....
+        <br>
+        Terdapat ralat sewaktu sistem mendapatkan maklumat untuk di whatsapp. Sila cuba semula atau kembali ke page sebelumnya.
+        <br>
+        Maaf.
+    </p>
+    <br>
+    <button type="button" class="btn btn-outline-dark" onclick="window.history.back()" style="cursor: pointer;">
+        Klik sini kembali ke page sebelumnya
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-under" onclick="window.location.reload(true)" style="cursor: pointer;">
+        Cuba semula
+    </button>
+
+    {{# def.poweredby }}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{# def.head }}
+    </head>
+<body>
+    <div class="container" style="text-align: center">
+
+        {{# def.errorrobot }}
+
+        <p class="lead">
+            Oh no!,
+            <br>
+            Tiada maklumat whatsapp yang dijumpai. Mungkin anda tersilap klik pautan ataupun pautan ini telah dipadam pemilik pautan.
+            <br>
+            Maaf.
+        </p>
+        <br>
+        <button type="button" class="btn btn-outline-dark" onclick="window.history.back()" style="cursor: pointer;">
+            Klik sini kembali ke page sebelumnya
+        </button>
+
+        {{# def.poweredby }}
+
+    </div>
+</body>
+</html>
