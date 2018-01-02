@@ -1,6 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
+const dot = require('dot').process({ path: './views' })
 
 const BIZSAYA_URL = process.env.PORTAL_URL
 
@@ -25,9 +26,19 @@ response.fatal = (res, statusCode = 500, msg = 'There is an error. Thats all I k
   res.end(msg)
 }
 
+response.success = (res, to, pageName, url) => {
+  res.end(dot.success({
+    to,
+    pageName,
+    url
+  }))
+}
+
 response.empty = (res, msg = null) => {
   if (_.isNull(msg)) {
-    msg = global.response.empty
+    msg = dot.empty({
+      title: 'Tiada maklumat untuk diwhatsapp dijumpai'
+    })
   }
 
   res.end(msg)
@@ -35,10 +46,16 @@ response.empty = (res, msg = null) => {
 
 response.error = (res, msg = null) => {
   if (_.isNull(msg)) {
-    msg = global.response.error
+    msg = dot.error({
+      title: 'Ralat sewaktu mendapatkan maklumat untuk diwhatsapp'
+    })
   }
 
   res.end(msg)
+}
+
+response.homepage = res => {
+  res.end(dot.index({}))
 }
 
 module.exports = response

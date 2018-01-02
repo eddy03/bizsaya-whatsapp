@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{# def.head }}
+    </head>
+<body>
+<div class="container" style="text-align: center">
+
+    <img src="https://storage.googleapis.com/bizsaya-assets/bizsaya_logo_small.png"
+         class="bizsayalogo"
+         alt="Logo Bizsaya"
+         style="margin: 10px 0px 25px 0px;">
+
+    <p class="lead">
+        Teras utama modul aplikasi Bizsaya
+        <br>
+        Bizsaya merupakan sebuah aplikasi atas talian yang digunakan untuk automasikan beberapa aspek didalam laman sosial FB Pages perniagaan anda.
+        Dan sistem mikro ini merupakan salah satu daripada modul-modul yang ada didalam Bizsaya.
+        <br>
+        <br>
+        Teras utama modul aplikasi Bizsaya ini TIDAK menyimpan sebarang maklumat nombor telefon anda atau berkaitan dengan anda.
+        <i>Source Code</i> modul ini adalah terbuka. <a href="https://github.com/eddy03/bizsaya-whatsapp">https://github.com/eddy03/bizsaya-whatsapp</a>
+    </p>
+    <p class="lead">
+        Untuk gunakan tanpa perlu daftar...
+    </p>
+    <p>
+        https://ws.bizsaya.com/<span style="color: red;">[nombor_telefon]</span>/<span style="color: green;">{mesej}</span>
+    </p>
+    <small>
+        <span style="color: red;">* Nombor telefon yang akan diwhatsapp</span>
+        <br>
+        <span style="color: green;">* Mesej adalah terpulang kepada anda</span>
+    </small>
+    <br>
+    <br>
+    <p>
+        <strong>Contoh :</strong> <br class="hidden-md-up"><a href="https://ws.bizsaya.com/0172631883/Boleh saya tahu tentang bizsaya?">https://ws.bizsaya.com/0172631883/Boleh saya tahu tentang bizsaya?</a>
+    </p>
+    <!--<p>-->
+        <!--<small>-->
+            <!--<small>-->
+                <!--Juga boleh digunakan pada domain https://ws.bizsaya.com-->
+            <!--</small>-->
+        <!--</small>-->
+    <!--</p>-->
+    <a href="https://bizsaya.com" class="btn btn-outline-dark" style="cursor: pointer;">
+        Ke sistem aplikasi Bizsaya
+    </a>
+
+</div>
+</body>
+</html>
