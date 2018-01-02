@@ -29,15 +29,15 @@ module.exports = (req, res) => {
     if (req.headers.host === 'g.yobb.me') {
       res.end(`${baseWSURL}${pn(number)}${messages}`)
     } else {
-      response.redirect(res, `${baseWSURL}${pn(number)}${messages}`)
+      response.success(res, `${baseWSURL}${pn(number)}${messages}`, number, req.url)
       global.stat()
       global.log(`Click to ${pn(number)} - Public API`)
     }
   } else {
     const KEY = URL.split('/')
     if (URL !== '' && KEY.length === 1) {
-      ws.getKeyAndReturnURL(KEY[0])
-        .then(url => response.redirect(res, url))
+      ws.getData(KEY[0])
+        .then(data => response.success(res, data.to, data.pageName, req.url))
         .catch(err => {
           if (_.isNull(err.toString().match(/^Error: Unable to get /))) {
             global.captureException(err)

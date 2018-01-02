@@ -26,6 +26,14 @@ response.fatal = (res, statusCode = 500, msg = 'There is an error. Thats all I k
   res.end(msg)
 }
 
+response.success = (res, to, pageName, url) => {
+  res.end(dot.success({
+    to,
+    pageName,
+    url
+  }))
+}
+
 response.empty = (res, msg = null) => {
   if (_.isNull(msg)) {
     msg = dot.empty({

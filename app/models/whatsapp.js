@@ -7,14 +7,17 @@ let ws = {}
 
 ws.BASE_URL = 'https://api.whatsapp.com/send?phone='
 
-ws.getKeyAndReturnURL = key => new Promise((resolve, reject) => {
+ws.getData = key => new Promise((resolve, reject) => {
   dataModel.getData(key)
     .then(data => {
       if (data) {
         const phoneNumber = pn(data.phone)
 
         if (phoneNumber) {
-          resolve(`${ws.BASE_URL}${phoneNumber}&text=${data.msg}`)
+          resolve({
+            to: `${ws.BASE_URL}${phoneNumber}&text=${data.msg}`,
+            pageName: data.name
+          })
           data.hit++
           dataModel.saveDataRAW(key, data)
           global.stat()
