@@ -1,25 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Whatsapp admin {{= it.pageName }}</title>
+    <title>Whatsapp {{= it.pageName? 'admin ' + it.pageName : 'kami' }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <meta name="keywords" content="Bizsaya,Bizsaya,Online,Perniagaan,Atastalian,statistik,laporan,saas,sistem,system,websystem,aplikasi web,facebook, messenger, bot, ai, yobb, automated,auto-reply,private-replies"/>
     <meta name="author" content="info@bizsaya.com">
-    <meta name="description" content="Klik untuk whatsapp ke admin {{= it.pageName }} tanpa perlu simpan nombor'}}"/>
+    <meta name="description" content="Klik untuk whatsapp ke {{= it.pageName? 'admin ' + it.pageName : 'kami' }} tanpa perlu simpan nombor'}}"/>
     <meta name="robots" content="noodp"/>
     <link rel="canonical" href="https://ws.bizsaya.com{{= it.url }}"/>
     <meta property="og:locale" content="en_US"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:title" content="Whatsapp admin {{= it.pageName }}"/>
-    <meta property="og:description" content="Klik untuk whatsapp ke admin {{= it.pageName }} tanpa perlu simpan nombor'}}"/>
+    <meta property="og:title" content="Whatsapp {{= it.pageName? 'admin ' + it.pageName : 'kami' }}"/>
+    <meta property="og:description" content="Klik untuk whatsapp ke {{= it.pageName? 'admin ' + it.pageName : 'kami' }} tanpa perlu simpan nombor'}}"/>
     <meta property="og:url" content="https://ws.bizsaya.com{{= it.url }}"/>
-    <meta property="og:site_name" content="Whatsapp admin {{= it.pageName }}"/>
+    <meta property="og:site_name" content="Whatsapp {{= it.pageName? 'admin ' + it.pageName : 'kami' }}"/>
     <meta property="og:image" content="https://storage.googleapis.com/bizsaya-assets/whatsapp-logo.png"/>
     <meta property="og:image:width" content="90"/>
     <meta property="og:image:height" content="90"/>
-    <meta property="og:image:alt" content="Whatsapp admin {{= it.pageName }}"/>
+    <meta property="og:image:alt" content="Whatsapp {{= it.pageName? 'admin ' + it.pageName : 'kami' }}"/>
     <meta property="fb:app_id" content="334288980380182"/>
 </head>
 <body>
