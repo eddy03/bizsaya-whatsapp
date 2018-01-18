@@ -56,7 +56,7 @@ response.error = (res, msg = null) => {
 
 response.homepage = res => {
   res.end(dot.index({
-    image: 'https://storage.googleapis.com/bizsaya-assets/bizsaya_logo_small.png'
+    image: 'https://storage.googleapis.com/bizsaya-assets/bizsaya_logo.png'
   }))
 }
 
