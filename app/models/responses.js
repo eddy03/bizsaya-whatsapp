@@ -30,7 +30,8 @@ response.success = (res, to, pageName, url) => {
   res.end(dot.success({
     to,
     pageName,
-    url
+    url,
+    image: 'https://storage.googleapis.com/bizsaya-assets/whatsapp_2.png'
   }))
 }
 
