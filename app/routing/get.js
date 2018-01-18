@@ -34,20 +34,25 @@ module.exports = (req, res) => {
       global.log(`Click to ${pn(number)} - Public API`)
     }
   } else {
-    const KEY = URL.split('/')
-    if (URL !== '' && KEY.length === 1) {
-      ws.getData(KEY[0])
-        .then(data => response.success(res, data.to, data.pageName, req.url))
-        .catch(err => {
-          if (_.isNull(err.toString().match(/^Error: Unable to get /))) {
-            global.captureException(err)
-            response.error(res)
-          } else {
-            response.empty(res)
-          }
-        })
-    } else {
+
+    if(URL === '/' || URL === '') {
       response.homepage(res)
+    } else {
+      const KEY = URL.split('/')
+      if (URL !== '' && KEY.length === 1) {
+        ws.getData(KEY[0])
+          .then(data => response.success(res, data.to, data.pageName, req.url))
+          .catch(err => {
+            if (_.isNull(err.toString().match(/^Error: Unable to get /))) {
+              global.captureException(err)
+              response.error(res)
+            } else {
+              response.empty(res)
+            }
+          })
+      } else {
+        response.homepage(res)
+      }
     }
   }
 }
