@@ -30,8 +30,7 @@ response.success = (res, to, pageName, url) => {
   res.end(dot.success({
     to,
     pageName,
-    url,
-    image: 'https://storage.googleapis.com/bizsaya-assets/whatsapp_2.png'
+    url
   }))
 }
 
@@ -56,9 +55,7 @@ response.error = (res, msg = null) => {
 }
 
 response.homepage = res => {
-  res.end(dot.index({
-    image: 'https://storage.googleapis.com/bizsaya-assets/bizsaya_logo.png'
-  }))
+  res.end(dot.index({}))
 }
 
 module.exports = response
