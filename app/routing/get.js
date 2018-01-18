@@ -26,6 +26,15 @@ module.exports = (req, res) => {
       }
     }
 
+    if(number === '0172631883' && messages === '&text=test') {
+      let url = `https://web.whatsapp.com/send?phone=${pn(number)}${messages}`
+      if(req.headers['user-agent'].match(/\sMobile/)) {
+        url = `whatsapp://send?phone=+${pn(number)}${messages}`
+      }
+      response.success(res, url, number, req.url)
+      return null
+    }
+
     if (req.headers.host === 'g.yobb.me') {
       res.end(`${baseWSURL}${pn(number)}${messages}`)
     } else {
