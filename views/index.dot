@@ -6,10 +6,17 @@
 <body>
 <div class="container" style="text-align: center">
 
-    <img src="https://storage.googleapis.com/bizsaya-assets/bizsaya_logo_small.png"
-         class="bizsayalogo"
-         alt="Logo Bizsaya"
-         style="margin: 10px 0px 25px 0px;">
+    <div style="">
+        <img src="https://storage.googleapis.com/bizsaya-assets/bizsaya_logo_small.png"
+             class="bizsayalogo"
+             alt="Logo Bizsaya"
+             style="margin: 10px 0px 25px 0px;">
+        +
+        <img src="https://storage.googleapis.com/bizsaya-assets/whatsapp.png"
+             class="bizsayalogo whatsapplogo"
+             alt="Logo Bizsaya"
+             style="margin: 10px 0px 25px 0px; border-radius: 9px;">
+    </div>
 
     <p class="lead">
         Teras utama modul aplikasi Bizsaya
@@ -25,7 +32,7 @@
         Untuk gunakan tanpa perlu daftar...
     </p>
     <p>
-        https://ws.bizsaya.com/<span style="color: red;">[nombor_telefon]</span>/<span style="color: green;">{mesej}</span>
+        https://wssaya.com/<span style="color: red;">[nombor_telefon]</span>/<span style="color: green;">{mesej}</span>
     </p>
     <small>
         <span style="color: red;">* Nombor telefon yang akan diwhatsapp</span>
@@ -35,15 +42,21 @@
     <br>
     <br>
     <p>
-        <strong>Contoh :</strong> <br class="hidden-md-up"><a href="https://ws.bizsaya.com/0172631883/Boleh saya tahu tentang bizsaya?">https://ws.bizsaya.com/0172631883/Boleh saya tahu tentang bizsaya?</a>
+        <strong>Contoh :</strong> <br class="hidden-md-up"><a href="https://wssaya.com/0172631883/Boleh saya tahu tentang bizsaya?">https://wssaya.com/0172631883/Boleh saya tahu tentang bizsaya?</a>
     </p>
-    <!--<p>-->
-        <!--<small>-->
-            <!--<small>-->
-                <!--Juga boleh digunakan pada domain https://ws.bizsaya.com-->
-            <!--</small>-->
-        <!--</small>-->
-    <!--</p>-->
+    <p style="line-height: 10px;">
+        <small>
+            <small>
+                Juga boleh digunakan pada domain
+                <br>
+                https://ws.bizsaya.com
+                <br>
+                https://wasap.bizsaya.com
+                <br>
+                https://whatsapp.bizsaya.com
+            </small>
+        </small>
+    </p>
     <a href="https://bizsaya.com" class="btn btn-outline-dark" style="cursor: pointer;">
         Ke sistem aplikasi Bizsaya
     </a>
