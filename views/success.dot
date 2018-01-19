@@ -24,9 +24,14 @@
 </head>
 <body>
 <div class="container">
+    {{? it.backupURL }}
     <script>
-        window.location.href = '{{= it.to }}'
+      window.location.href = '{{= it.to }}';
+      setTimeout(function () { window.location.href = '{{= it.backupURL }}'; }, 500);
     </script>
+    {{??}}
+    <script>window.location.href = '{{= it.to }}';</script>
+    {{?}}
 </div>
 </body>
 </html>

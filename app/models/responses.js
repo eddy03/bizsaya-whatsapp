@@ -26,11 +26,12 @@ response.fatal = (res, statusCode = 500, msg = 'There is an error. Thats all I k
   res.end(msg)
 }
 
-response.success = (res, to, pageName, url) => {
+response.success = (res, to, pageName, url, backupURL = null) => {
   res.end(dot.success({
     to,
     pageName,
-    url
+    url,
+    backupURL
   }))
 }
 
