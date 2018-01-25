@@ -28,10 +28,11 @@ module.exports = (req, res) => {
 
     if(number === '0172631883' && messages === '&text=test') {
       let url = `https://web.whatsapp.com/send?phone=${pn(number)}${messages}`
+      const backupURL = `${baseWSURL}${pn(number)}${messages}`
       if(req.headers['user-agent'].match(/\sMobile/)) {
-        url = `whatsapp://send?phone=+${pn(number)}${messages}`
+        url = `whatsapp://send?phone=+${pn(number)}${messages}&abid=+${pn(number)}`
       }
-      response.success(res, url, number, req.url)
+      response.success(res, url, number, req.url, backupURL)
       return null
     }
 
@@ -46,6 +47,8 @@ module.exports = (req, res) => {
 
     if(URL === '/' || URL === '') {
       response.homepage(res)
+    } else if (URL.match(/^send\?/)) {
+      response.redirect(res, decodeURIComponent(_.clone(URL).replace('send?to=', '')))
     } else {
       const KEY = URL.split('/')
       if (URL !== '' && KEY.length === 1) {
