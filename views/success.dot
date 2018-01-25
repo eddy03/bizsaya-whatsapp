@@ -32,6 +32,7 @@
     {{??}}
     <script>window.location.href = '{{= it.to }}';</script>
     {{?}}
+    {{# def.ganalytic }}
 </div>
 </body>
 </html>

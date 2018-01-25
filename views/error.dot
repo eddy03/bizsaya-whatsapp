@@ -26,5 +26,6 @@
     {{# def.poweredby }}
 
 </div>
+{{# def.ganalytic }}
 </body>
 </html>
