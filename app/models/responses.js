@@ -35,24 +35,20 @@ response.success = (res, to, pageName, url, backupURL = null) => {
   }))
 }
 
-response.empty = (res, msg = null) => {
-  if (_.isNull(msg)) {
-    msg = dot.empty({
-      title: 'Tiada maklumat untuk diwhatsapp dijumpai'
-    })
+response.empty = (res, title = null) => {
+  if (_.isNull(title)) {
+    title = 'Tiada maklumat untuk diwhatsapp dijumpai'
   }
 
-  res.end(msg)
+  res.end(dot.empty({ title }))
 }
 
-response.error = (res, msg = null) => {
-  if (_.isNull(msg)) {
-    msg = dot.error({
-      title: 'Ralat sewaktu mendapatkan maklumat untuk diwhatsapp'
-    })
+response.error = (res, title = null) => {
+  if (_.isNull(title)) {
+    title = 'Ralat sewaktu mendapatkan maklumat untuk diwhatsapp'
   }
 
-  res.end(msg)
+  res.end(dot.error({ title }))
 }
 
 response.homepage = res => {

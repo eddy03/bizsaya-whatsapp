@@ -9,7 +9,7 @@ const pn = require('../models/phone-number')
 // Incomming Whatsapp API
 module.exports = (req, res) => {
   const URL = _.clone(req.url.substring(1))
-  let number = URL.substring(0, URL.indexOf('/'))
+  let number = URL.substring(0, URL.indexOf('/')).replace(/\D/g, '')
 
   // Unregistered user use our API
   if (number.match(/^(01|601)(\d{7,9})$/) || URL.match(/^(01|601)(\d{7,9})$/)) {
@@ -26,26 +26,21 @@ module.exports = (req, res) => {
       }
     }
 
-    if(number === '0172631883' && messages === '&text=test') {
-      let url = `https://web.whatsapp.com/send?phone=${pn(number)}${messages}`
-      const backupURL = `${baseWSURL}${pn(number)}${messages}`
-      if(req.headers['user-agent'].match(/\sMobile/)) {
-        url = `whatsapp://send?phone=+${pn(number)}${messages}&abid=+${pn(number)}`
-      }
-      response.success(res, url, number, req.url, backupURL)
-      return null
-    }
-
     if (req.headers.host === 'g.yobb.me') {
       res.end(`${baseWSURL}${pn(number)}${messages}`)
     } else {
-      response.success(res, `${baseWSURL}${pn(number)}${messages}`, number, req.url)
+      let url = `${baseWSURL}${pn(number)}${messages}`
+      const backupURL = `${baseWSURL}${pn(number)}${messages}`
+      if (_.isEmpty(req.headers['user-agent'].match(/\sMobile/))) {
+        url = `https://web.whatsapp.com/send?phone=${pn(number)}${messages}`
+      }
+      response.success(res, url, number, req.url, backupURL)
+      // response.success(res, `${baseWSURL}${pn(number)}${messages}`, number, req.url)
       global.stat()
       global.log(`Click to ${pn(number)} - Public API`)
     }
   } else {
-
-    if(URL === '/' || URL === '') {
+    if (URL === '/' || URL === '') {
       response.homepage(res)
     } else if (URL.match(/^send\?/)) {
       response.redirect(res, decodeURIComponent(_.clone(URL).replace('send?to=', '')))
