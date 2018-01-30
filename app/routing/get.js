@@ -29,10 +29,9 @@ module.exports = (req, res) => {
     if (req.headers.host === 'g.yobb.me') {
       res.end(`${baseWSURL}${pn(number)}${messages}`)
     } else {
-
       let url = `${baseWSURL}${pn(number)}${messages}`
       const backupURL = `${baseWSURL}${pn(number)}${messages}`
-      if(_.isEmpty(req.headers['user-agent'].match(/\sMobile/))) {
+      if (_.isEmpty(req.headers['user-agent'].match(/\sMobile/))) {
         url = `https://web.whatsapp.com/send?phone=${pn(number)}${messages}`
       }
       response.success(res, url, number, req.url, backupURL)
@@ -41,8 +40,7 @@ module.exports = (req, res) => {
       global.log(`Click to ${pn(number)} - Public API`)
     }
   } else {
-
-    if(URL === '/' || URL === '') {
+    if (URL === '/' || URL === '') {
       response.homepage(res)
     } else if (URL.match(/^send\?/)) {
       response.redirect(res, decodeURIComponent(_.clone(URL).replace('send?to=', '')))
