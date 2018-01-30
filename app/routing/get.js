@@ -2,9 +2,10 @@
 
 const _ = require('lodash')
 
+const pnModel = require('../models/phone-number')
+const dataModel = require('../models/data')
+const uriModel = require('../models/uri')
 const response = require('../models/responses')
-const ws = require('../models/whatsapp')
-const pn = require('../models/phone-number')
 
 // Incomming Whatsapp API
 module.exports = (req, res) => {
@@ -12,43 +13,41 @@ module.exports = (req, res) => {
   let number = URL.substring(0, URL.indexOf('/')).replace(/\D/g, '')
 
   // Unregistered user use our API
-  if (number.match(/^(01|601)(\d{7,9})$/) || URL.match(/^(01|601)(\d{7,9})$/)) {
-    const baseWSURL = ws.BASE_URL
+  if (number.match(pnModel.numberRegex) || URL.match(pnModel.numberRegex)) {
     let messages = ''
 
-    if (URL.match(/^(01|601)(\d{7,9})$/)) {
+    if (URL.match(pnModel.numberRegex)) {
       number = URL
     } else {
       messages = URL.substring(URL.indexOf('/')) || ''
       if (!_.isEmpty(messages)) {
         messages = messages.substring(1)
-        messages = _.isEmpty(messages) ? '' : `&text=${messages}`
       }
     }
 
-    if (req.headers.host === 'g.yobb.me') {
-      res.end(`${baseWSURL}${pn(number)}${messages}`)
-    } else {
-      let url = `${baseWSURL}${pn(number)}${messages}`
-      const backupURL = `${baseWSURL}${pn(number)}${messages}`
-      if (_.isEmpty(req.headers['user-agent'].match(/\sMobile/))) {
-        url = `https://web.whatsapp.com/send?phone=${pn(number)}${messages}`
-      }
-      response.success(res, url, number, req.url, backupURL)
-      // response.success(res, `${baseWSURL}${pn(number)}${messages}`, number, req.url)
-      global.stat()
-      global.log(`Click to ${pn(number)} - Public API`)
-    }
+    const URLTO = uriModel.getURI(req, number, messages)
+    response.success(res, URLTO, number, req.url)
+    global.stat()
+    global.log(`Click to ${number} - Public API`)
+
   } else {
     if (URL === '/' || URL === '') {
       response.homepage(res)
-    } else if (URL.match(/^send\?/)) {
-      response.redirect(res, decodeURIComponent(_.clone(URL).replace('send?to=', '')))
     } else {
       const KEY = URL.split('/')
       if (URL !== '' && KEY.length === 1) {
-        ws.getData(KEY[0])
-          .then(data => response.success(res, data.to, data.pageName, req.url))
+        const key = KEY[0]
+        dataModel.getData(key)
+          .then(data => {
+            response.success(res, uriModel.getURI(req, data.phone, data.msg), data.name || data.phone, req.url)
+            return data
+          })
+          .then(data => {
+            data.hit++
+            dataModel.saveDataRAW(key, data)
+            global.stat()
+            global.log(`Click to ${data.phone} - ${key}`)
+          })
           .catch(err => {
             if (_.isNull(err.toString().match(/^Error: Unable to get /))) {
               global.captureException(err)
