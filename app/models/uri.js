@@ -21,6 +21,7 @@ uriP.toAPIWhatsapp = (number, message) => {
 
 uriP.phoneSend = (number, message = '') => {
   if(!_.isEmpty(_.trim(message))) {
+    message = message.replace(/\&/, '%26')
     message = `&text=${message}`
   }
 

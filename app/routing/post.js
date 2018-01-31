@@ -15,7 +15,6 @@ module.exports = (req, res) => {
       let payload = JSON.parse(body)
       if (!_.isEmpty(payload) && !_.isEmpty(payload.id)) {
         dataModel.saveData(payload)
-        console.log('Payload', require('util').inspect(payload, { colors: true, depth: null }))
         global.log(`Update whatsapp data ${payload.id}`)
         response.ok(res)
       } else {
