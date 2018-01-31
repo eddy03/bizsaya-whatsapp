@@ -26,11 +26,11 @@
 <div class="container">
     {{? it.backupURL }}
     <script>
-      window.location.href = '{{= it.to }}';
-      setTimeout(function () { window.location.href = '{{= it.backupURL }}'; }, 500);
+      window.location.href = `{{= it.to }}`;
+      setTimeout(function () { window.location.href = `{{= it.backupURL }}`; }, 500);
     </script>
     {{??}}
-    <script>window.location.href = '{{= it.to }}';</script>
+    <script>window.location.href = `{{= it.to }}`;</script>
     {{?}}
     {{# def.ganalytic }}
 </div>
