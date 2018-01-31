@@ -26,11 +26,11 @@
 <div class="container">
     {{? it.backupURL }}
     <script>
-      window.location.href = `{{= it.to }}`;
+      window.location.href = `{{= it.to.replace('&', '%26') }}`;
       setTimeout(function () { window.location.href = `{{= it.backupURL }}`; }, 500);
     </script>
     {{??}}
-    <script>window.location.href = `{{= it.to }}`;</script>
+    <script>window.location.href = `{{= it.to.replace('&', '%26') }}`;</script>
     {{?}}
     {{# def.ganalytic }}
 </div>
