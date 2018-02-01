@@ -20,6 +20,8 @@ module.exports = {
       phone: data.phone,
       name: data.page_name,
       msg: data.message || '',
+      ga: _.isEmpty(data.ga_code)? null : data.ga_code,
+      pixel: _.isEmpty(data.pixel_code)? null : data.pixel_code,
       hit: 0
     }))
   },

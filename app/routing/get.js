@@ -39,7 +39,9 @@ module.exports = (req, res) => {
         const key = KEY[0]
         dataModel.getData(key)
           .then(data => {
-            response.success(res, uriModel.getURI(req, data.phone, data.msg), data.name || data.phone, req.url)
+            const URLTO = uriModel.getURI(req, data.phone, data.msg)
+            const NAME = data.name || data.phone
+            response.success(res, URLTO, NAME, req.url, data.ga, data.pixel)
             return data
           })
           .then(data => {
