@@ -29,10 +29,21 @@
       window.location.href = `{{= it.to }}`;
       setTimeout(function () { window.location.href = `{{= it.backupURL }}`; }, 500);
     </script>
+    {{?? it.ga }}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{= it.ga }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{= it.ga }}');
+    </script>
+    <script>
+      setTimeout(function () { window.location.href = `{{= it.to }}`; }, 1000);
+    </script>
     {{??}}
     <script>window.location.href = `{{= it.to }}`;</script>
     {{?}}
-    {{# def.ganalytic }}
 </div>
 </body>
 </html>
