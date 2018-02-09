@@ -7,8 +7,10 @@ let uri = {}
 let uriP = {}
 
 uri.getURI = (req, number, message) => {
-  const ISDESKTOP = _.isEmpty(req.headers['user-agent'].match(/\sMobile/))
-  return ISDESKTOP? uriP.toWebWhatsapp(number, message) : uriP.toAPIWhatsapp(number, message)
+  // const ISDESKTOP = _.isEmpty(req.headers['user-agent'].match(/\sMobile/))
+  // return ISDESKTOP? uriP.toWebWhatsapp(number, message) : uriP.toAPIWhatsapp(number, message)
+
+  return uriP.toAPIWhatsapp(number, message)
 }
 
 uriP.toWebWhatsapp = (number, message) => {
